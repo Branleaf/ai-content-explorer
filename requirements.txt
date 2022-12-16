@@ -1,0 +1,6 @@
+PySimpleGUI
+os
+json
+requests
+re
+time
