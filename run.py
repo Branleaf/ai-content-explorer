@@ -28,12 +28,11 @@ def fetch_firebase_token():
     resp = requests.post(auth_url, f'{{"returnSecureToken":true,"email":{json.dumps(user_email)},"password":{json.dumps(user_pass)}}}', headers = headers)
     # convert response to json so i can actually read the token
     json_resp = resp.json()
-    if 'idToken' in json_resp.keys():
-        # and add the received token to the headers for the AID API requests to use
-        headers.update({"authorization":f"firebase {json_resp['idToken']}"})
-        return True
-    else:
+    if 'idToken' not in json_resp.keys():
         return False
+    # and add the received token to the headers for AID API requests to use
+    headers.update({"authorization":f"firebase {json_resp['idToken']}"})
+    return True
 
 def fetch_aid_search(content_type:str, offset:int, search_term:str, sort_order:str, time_range:str, creator_only:bool, safe:bool, following:bool, third_person:bool):
     reauth()
